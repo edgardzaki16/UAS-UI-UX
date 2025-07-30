@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Penghuni - Dashboard Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #F5F5F5;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    }
+    .sidebar {
+      background-color: #37A5B8;
+      min-height: 100vh;
+      color: #fff;
+      padding: 0;
+    }
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      padding: 12px 20px;
+      border-left: 4px solid transparent;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #2e92a2;
+      border-left: 4px solid #fff;
+    }
+    .admin-section {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #ffffff;
+      margin-bottom: 20px;
+    }
+    .admin-photo {
+      width: 60px;
+      height: 60px;
+      background-color: #D9D9D9;
+      border-radius: 50%;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+    .admin-info h5 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    .admin-info small {
+      font-size: 15px;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+    .main-content {
+      padding: 15px 40px;
+    }
+    .dashboard-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-menu li {
+      margin: 0;
+    }
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255,255,255,0.1);
+      border-left: 4px solid #fff;
+      padding-left: 16px;
+    }
+    .sidebar-menu a img {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+    }
+    .sidebar-menu a.active {
+      background-color: rgba(255,255,255,0.2);
+    }
+    .page-header {
+      margin-bottom: 10px;
+    }
+    .btn-success {
+      background-color: #64B837;
+      font-weight: 500;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+    }
+    .btn-success:hover {
+      background-color: #218838;
+    }
+    .btn-tambah {
+      background-color: #64B837;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+    .btn-tambah:hover {
+      background-color: #5aa332;
+    }
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border: 2px solid #ddd;
+    }
+    .table-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .form-container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border: 2px solid #ddd;
+    }
+    .form-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .form-control {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px 15px;
+      font-size: 14px;
+      width: 100%;
+      transition: border-color 0.3s ease;
+    }
+    .form-control:focus {
+      border-color: #37A5B8;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(55, 165, 184, 0.1);
+    }
+    .btn-primary {
+      background-color: #37A5B8;
+      border-color: #37A5B8;
+      color: white;
+      font-weight: 500;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .btn-primary:hover {
+      background-color: #2e92a2;
+      border-color: #2e92a2;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: white;
+      font-weight: 500;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+    .button-group {
+      text-align: right;
+      margin-top: 30px;
+    }
+    .current-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 2px solid #ddd;
+      margin-bottom: 10px;
+    }
+    .photo-preview {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .photo-label {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      display: block;
+      margin-top: 5px;
+    }
+
+    /* Custom Modal Styles - Updated to slide from top */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .custom-modal.show {
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      transform: translateY(-50px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .custom-modal.show .modal-content {
+      transform: translateY(0);
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      color: #333;
+    }
+
+    .modal-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .modal-message {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .modal-btn {
+      background-color: #64B837;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-btn:hover {
+      background-color: #5aa332;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid p-0">
+  <div class="row g-0">
+    <!-- Sidebar -->
+    <div class="col-md-2 sidebar">
+      <div class="admin-section">
+        <div class="admin-photo"></div>
+        <div class="admin-info">
+          <h5>Admin</h5>
+          <small>admin@gmail.com</small>
+        </div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li><a href="dashboardadmin.html"><img src="image/profileadmin.png" alt="Dashboard">Dashboard</a></li>
+        <li><a href="kelolakamar.html"><img src="image/kelolakamar.png" alt="Kelola Kamar">Kelola kamar</a></li>
+        <li><a href="booking.html"><img src="image/booking.png" alt="Booking">Booking</a></li>
+        <li><a href="kelolapenghuni.html" class="active"><img src="image/kelolapenghuni.png" alt="Kelola Penghuni">Kelola penghuni</a></li>
+        <li><a href="laporankeuangan.html"><img src="image/laporan.png" alt="Laporan">Laporan keuangan</a></li>
+        <li><a href="#"><img src="image/logoutadmin.png" alt="Keluar">Keluar</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-10 main-content">
+      <div class="page-header">
+        <h1 class="dashboard-title"></h1>
+      </div>
+      
+      <div class="row justify-content-start">
+        <div class="col-md-8 col-lg-6">
+          <div class="form-container">
+            <h2 class="form-title">Edit Data Penghuni</h2>
+            
+            <form id="editPenghuniForm">
+          <div class="form-group">
+            <label class="form-label">Nama Penghuni</label>
+            <input type="text" class="form-control" id="namaPenghuni" value="Naufal aja" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-control" id="namaLengkap" value="Abigail Naufal" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" value="naufalabigail@gmail.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">No WhatsApp</label>
+            <input type="tel" class="form-control" id="noWa" value="085754425048" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Alamat</label>
+            <textarea class="form-control" id="alamat" rows="3" required>Yogyakarta</textarea>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Foto Identitas</label>
+            <div class="photo-preview">
+              <img src="image/foto1.png" alt="Current Photo" class="current-photo" id="currentPhoto">
+              <span class="photo-label">Foto saat ini</span>
+            </div>
+            <input type="file" class="form-control" id="fotoIdentitas" accept="image/*">
+            <small class="form-text text-muted">Biarkan kosong jika tidak ingin mengubah foto</small>
+          </div>
+          
+          <div class="button-group">
+            <button type="submit" class="btn btn-success">Simpan</button>
+          </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Success Modal -->
+<div class="custom-modal" id="successModal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()">&times;</button>
+    <img src="image/centang.png" alt="Success" class="modal-icon">
+    <h3 class="modal-title">Data Penghuni Berhasil Diperbarui!</h3>
+    <p class="modal-message">Data penghuni telah berhasil diperbarui dan disimpan ke dalam sistem.</p>
+    <button class="modal-btn" onclick="closeModal()">Selesai</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function kembali() {
+    window.location.href = 'kelolapenghuni.html';
+  }
+  
+  // Preview foto yang akan diupload
+  document.getElementById('fotoIdentitas').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('currentPhoto').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+  
+  function showSuccessModal() {
+    const modal = document.getElementById('successModal');
+    modal.style.display = 'flex';
+    // Trigger animation after display is set
+    setTimeout(() => {
+      modal.classList.add('show');
+    }, 10);
+  }
+  
+  function closeModal() {
+    const modal = document.getElementById('successModal');
+    modal.classList.remove('show');
+    // Wait for animation to complete before hiding
+    setTimeout(() => {
+      modal.style.display = 'none';
+      // Redirect to penghuni page after closing modal
+      window.location.href = 'kelolapenghuni.html';
+    }, 300);
+  }
+  
+  // Handle form submission
+  document.getElementById('editPenghuniForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    showSuccessModal();
+  });
+  
+  // Close modal when clicking outside
+  document.getElementById('successModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeModal();
+    }
+  });
+  
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('successModal');
+      if (modal.classList.contains('show')) {
+        closeModal();
+      }
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kelola Kamar - Dashboard Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #F5F5F5;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    }
+    .sidebar {
+      background-color: #37A5B8;
+      min-height: 100vh;
+      color: #fff;
+      padding: 0;
+    }
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      padding: 12px 20px;
+      border-left: 4px solid transparent;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #2e92a2;
+      border-left: 4px solid #fff;
+    }
+    .admin-section {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #ffffff;
+      margin-bottom: 20px;
+    }
+    .admin-photo {
+      width: 60px;
+      height: 60px;
+      background-color: #D9D9D9;
+      border-radius: 50%;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+    .admin-info h5 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    .admin-info small {
+      font-size: 15px;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+    .main-content {
+      padding: 30px 40px;
+    }
+    .dashboard-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 30px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-menu li {
+      margin: 0;
+    }
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #fff;
+      padding-left: 16px;
+    }
+    .sidebar-menu a img {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+    }
+    .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .page-header {
+      margin-bottom: 20px;
+    }
+    .btn-tambah {
+      background-color: #64B837;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+    .btn-tambah:hover {
+      background-color: #5aa332;
+    }
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border: 2px solid #ddd;
+    }
+    .table-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .kamar-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .kamar-table th {
+      background-color: #f8f9fa;
+      padding: 15px 10px;
+      text-align: center;
+      font-weight: 600;
+      color: #333;
+      border: 1px solid #dee2e6;
+      font-size: 14px;
+    }
+    .kamar-table td {
+      padding: 15px 10px;
+      text-align: center;
+      border: 1px solid #dee2e6;
+      vertical-align: middle;
+    }
+    .kamar-table tbody tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    .kamar-photo {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .btn-action {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      margin: 0 3px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: nowrap;
+    }
+    .btn-edit {
+      background-color: #F9BC39;
+      color: #ffffff;
+    }
+    .btn-edit:hover {
+      background-color: #dba532;
+    }
+    .btn-delete {
+      background-color: #EF3639;
+      color: white;
+    }
+    .btn-delete:hover {
+      background-color: #da3134;
+    }
+    .col-no { width: 8%; }
+    .col-photo { width: 15%; }
+    .col-fasilitas { width: 15%; }
+    .col-luas { width: 10%; }
+    .col-deskripsi { width: 25%; }
+    .col-harga { width: 12%; }
+    .col-actions { width: 15%; }
+
+    /* Modal styles */
+    .modal-content {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+    
+    .modal-header {
+      border-bottom: none;
+      padding: 20px 20px 0 20px;
+      justify-content: flex-end;
+    }
+    
+    .modal-body {
+      padding: 20px 30px 30px 30px;
+      text-align: center;
+    }
+    
+    .modal-footer {
+      border-top: none;
+      padding: 20px 30px 30px 30px;
+      justify-content: center;
+    }
+    
+    .delete-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px auto;
+      display: block;
+    }
+    
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .modal-text {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+    
+    .btn-modal-danger {
+      background-color: #EF3639;
+      color: white;
+      font-weight: 500;
+      padding: 10px 25px;
+      border-radius: 8px;
+    }
+    
+    .btn-modal-danger:hover {
+      background-color: #d23134;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid p-0">
+  <div class="row g-0">
+    <!-- Sidebar -->
+    <div class="col-md-2 sidebar">
+      <div class="admin-section">
+        <div class="admin-photo"></div>
+        <div class="admin-info">
+          <h5>Admin</h5>
+          <small>admin@gmail.com</small>
+        </div>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li><a href="dashboardadmin.html"><img src="image/profileadmin.png" alt="Dashboard">Dashboard</a></li>
+        <li><a href="kelolakamar.html" class="active"><img src="image/kelolakamar.png" alt="Kelola Kamar">Kelola kamar</a></li>
+        <li><a href="booking.html"><img src="image/booking.png" alt="Booking">Booking</a></li>
+        <li><a href="kelolapenghuni.html"><img src="image/kelolapenghuni.png" alt="Kelola Penghuni">Kelola penghuni</a></li>
+        <li><a href="laporankeuangan.html"><img src="image/laporan.png" alt="Laporan">Laporan keuangan</a></li>
+        <li><a href="#"><img src="image/logoutadmin.png" alt="Keluar">Keluar</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-10 main-content">
+      <div class="page-header">
+        <h1 class="dashboard-title"></h1>
+      </div>
+      
+      <div class="table-container">
+        <h2 class="table-title">Data Kamar</h2>
+        
+        <!-- Tambah Data Button -->
+        <button class="btn-tambah" onclick="tambahData()">Tambah Data</button>
+        
+        <table class="kamar-table">
+          <thead>
+            <tr>
+              <th class="col-no">NO</th>
+              <th class="col-photo">Foto Kamar</th>
+              <th class="col-fasilitas">Fasilitas</th>
+              <th class="col-luas">Luas</th>
+              <th class="col-deskripsi">Deskripsi</th>
+              <th class="col-harga">Harga</th>
+              <th class="col-actions">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                <img src="image/Image1.png" alt="Foto Kamar" class="kamar-photo">
+              </td>
+              <td>Kipas angin</td>
+              <td>10m²</td>
+              <td>Kamar ini sangat nyaman enak</td>
+              <td>1 Juta</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-action btn-edit" onclick="editKamar(1)">Edit</button>
+                  <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-room-id="1">Hapus</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>
+                <img src="image/Image2.png" alt="Foto Kamar" class="kamar-photo">
+              </td>
+              <td>AC, Lemari</td>
+              <td>12m²</td>
+              <td>Kamar dengan fasilitas lengkap</td>
+              <td>1.5 Juta</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-action btn-edit" onclick="editKamar(2)">Edit</button>
+                  <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-room-id="2">Hapus</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>
+                <img src="image/Image3.png" alt="Foto Kamar" class="kamar-photo">
+              </td>
+              <td>Kipas angin, Meja</td>
+              <td>8m²</td>
+              <td>Kamar sederhana tapi nyaman</td>
+              <td>800 Ribu</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-action btn-edit" onclick="editKamar(3)">Edit</button>
+                  <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-room-id="3">Hapus</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="image/hapus.png" alt="Delete Icon" class="delete-icon">
+        <h5 class="modal-title" id="deleteModalLabel">Yakin ingin hapus kamar ini?</h5>
+        <p class="modal-text">Apakah kamu benar-benar yakin mau menghapus data kamar ini? Kalau sudah dihapus, kita tidak bisa mengembalikannya lagi.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-modal-danger" id="confirmDelete">Tetap Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function tambahData() {
+    window.location.href = 'tambahkamar.html';
+  }
+  
+  function editKamar(id) {
+    window.location.href = 'editkamar.html?id=' + id;
+  }
+  
+  // Script untuk menangani konfirmasi hapus
+  let roomIdToDelete = null;
+  
+  // Event listener untuk tombol hapus
+  document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('[data-bs-target="#deleteModal"]');
+    const confirmDeleteBtn = document.getElementById('confirmDelete');
+    
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        roomIdToDelete = this.getAttribute('data-room-id');
+      });
+    });
+    
+    confirmDeleteBtn.addEventListener('click', function() {
+      if (roomIdToDelete) {
+        // Di sini Anda bisa menambahkan logika untuk menghapus data
+        // Misalnya mengirim request ke server atau menghapus baris dari tabel
+        
+        // Contoh: hapus baris dari tabel
+        const row = document.querySelector(`tr:has([data-room-id="${roomIdToDelete}"])`);
+        if (row) {
+          row.remove();
+        }
+        
+        // Tutup modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        modal.hide();
+        
+        // Reset roomIdToDelete
+        roomIdToDelete = null;
+      }
+    });
+  });
+</script>
+</body>
+</html>

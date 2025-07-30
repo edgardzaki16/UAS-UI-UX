@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mamikos - Sewa Kos</title>
+  <style>
+    /* Reset & Layout */
+   /* Reset & Layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.form-card {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  width: 500px;
+  max-width: 90%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.form-header {
+  margin-bottom: 24px;
+}
+
+.form-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.step-indicator {
+  font-size: 14px;
+  color: #64b837;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #39a8b8;
+}
+
+.form-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.gender-options {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.phone-group {
+  display: flex;
+  gap: 8px;
+}
+
+.country-code {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.whatsapp-note {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px 24px;
+  background-color: #37A5B8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:hover {
+  background-color: rgb(34, 104, 114);
+}
+
+.submit-btn:active {
+  transform: translateY(1px);
+}
+
+/* Payment */
+.payment-form {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.bsi-card {
+  width: 140px;
+  min-height: 340px;
+  background: linear-gradient(135deg, #37A5B8, #4A9FC4);
+  border-radius: 8px;
+  padding: 16px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
+}
+
+.bsi-logo {
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.bsi-nama {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin: 16px 0 12px 0;
+  color: white;
+  font-size: 11px;
+  text-align: left;
+  outline: none;
+}
+
+.bsi-number {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: white;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.copy-icon {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.payment-content {
+  flex: 1;
+  padding-left: 8px;
+}
+
+.payment-details {
+  margin-bottom: 20px;
+}
+
+.payment-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.payment-table {
+  width: 100%;
+  font-size: 13px;
+}
+
+.payment-table td {
+  padding: 4px 0;
+  vertical-align: top;
+}
+
+.payment-table td:first-child {
+  color: #333;
+  width: 60%;
+}
+
+.payment-table td:nth-child(2) {
+  text-align: center;
+  width: 10px;
+  color: #666;
+}
+
+.payment-table td:last-child {
+  text-align: right;
+  color: #333;
+  font-weight: 500;
+}
+
+.total-row td {
+  font-weight: 600;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+  margin-top: 6px;
+}
+
+.upload-section {
+  margin-bottom: 18px;
+}
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+}
+
+.upload-text {
+  font-size: 13px;
+  color: #666;
+  flex: 1;
+}
+
+.upload-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: #666;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#file-input {
+  display: none;
+}
+
+/* New Success Page (centang.png) */
+.success-container {
+  background-color: white;
+  padding: 60px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  width: 500px;
+  max-width: 90%;
+  text-align: center;
+}
+
+.checkmark-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.checkmark-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  animation: checkmarkScale 0.8s ease-out 0.2s both;
+}
+
+.new-success-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  opacity: 1;
+}
+
+.new-success-message {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 1;
+}
+
+.new-success-btn {
+  background: #64B837;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  opacity: 1;
+}
+
+.new-success-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(100, 184, 55, 0.4);
+}
+
+.new-success-btn:active {
+  transform: translateY(0);
+}
+
+.hidden {
+  display: none;
+}
+
+/* Animasi centang saja */
+@keyframes checkmarkScale {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .success-container {
+    padding: 40px 24px;
+  }
+
+  .new-success-title {
+    font-size: 24px;
+  }
+
+  .new-success-message {
+    font-size: 15px;
+  }
+
+  .checkmark-image {
+    width: 70px;
+    height: 70px;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Form Pengajuan Sewa (Step 1) -->
+  <div id="form-pengajuan" class="modal-overlay">
+    <div class="form-card">
+      <div class="close-btn" onclick="closeModal()">×</div>
+      
+      <div class="form-header">
+        <div class="form-title">Form pengajuan sewa</div>
+        <div class="step-indicator">1 of 2</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap</label>
+        <input type="text" class="form-input" placeholder="Masukkan nama lengkap">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Jenis kelamin :</label>
+        <div class="gender-options">
+          <div class="radio-group">
+            <input type="radio" id="laki" name="gender" value="laki-laki">
+            <label for="laki">laki-laki</label>
+          </div>
+          <div class="radio-group">
+            <input type="radio" id="perempuan" name="gender" value="perempuan">
+            <label for="perempuan">perempuan</label>
+          </div>
+        </div>
+        <div class="whatsapp-note">
+          <img src="image/IconInfo.png" alt="info">
+          silahkan masukan no whatsapp aktif
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="phone-group">
+          <select class="form-select country-code">
+            <option value="+62">+62</option>
+          </select>
+          <input type="tel" class="form-input" placeholder="masukan no hp anda">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="date" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <select class="form-select">
+          <option value="">Mau sewa berapa bulan</option>
+          <option value="1">1 bulan</option>
+          <option value="3">3 bulan</option>
+          <option value="6">6 bulan</option>
+          <option value="12">12 bulan</option>
+        </select>
+      </div>
+
+      <button class="submit-btn" onclick="showStep2()">Selanjutnya</button>
+    </div>
+  </div>
+
+  <!-- Form Pembayaran (Step 2) -->
+  <div id="form-pembayaran" class="modal-overlay hidden">
+    <div class="form-card">
+      <div class="close-btn" onclick="closeModal()">×</div>
+      
+      <div class="payment-form">
+        <div class="bsi-card">
+          <div class="bsi-logo">BSI</div>
+          <input class="bsi-nama" value="Partini" readonly>
+          <div class="bsi-number">
+            7123456789
+            <span class="copy-icon">📋</span>
+          </div>
+        </div>
+        
+        <div class="payment-content">
+          <div class="form-header">
+            <div class="form-title">Form pembayaran</div>
+            <div class="step-indicator">2 of 2</div>
+          </div>
+          
+          <div class="payment-details">
+            <div class="payment-title">Rincian pembayaran pertama</div>
+            <table class="payment-table">
+              <tr>
+                <td>Biaya sewa kos</td>
+                <td>:</td>
+                <td>Rp4.200.000</td>
+              </tr>
+              <tr>
+                <td>Deposit</td>
+                <td>:</td>
+                <td>Rp1.600.000</td>
+              </tr>
+              <tr>
+                <td>Biaya layanan</td>
+                <td>:</td>
+                <td>Rp15.000</td>
+              </tr>
+              <tr class="total-row">
+                <td>Total pembayaran</td>
+                <td>:</td>
+                <td>Rp5.815.000</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="upload-section">
+            <div class="upload-wrapper">
+              <span class="upload-text">upload bukti pembayaran</span>
+              <div class="upload-icon" onclick="document.getElementById('file-input').click()">🖼️</div>
+            </div>
+            <input type="file" id="file-input" accept="image/*,.pdf" onchange="handleFileUpload(this)">
+          </div>
+
+          <button class="submit-btn" onclick="submitPayment()">Selesai</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Pembayaran Berhasil (Step 3) -->
+  <div id="new-pembayaran-berhasil" class="modal-overlay hidden">
+    <div class="success-container">
+      <div class="close-btn" onclick="closeModal()">×</div>
+      
+      <div class="checkmark-container">
+        <img src="image/centang.png" alt="Success" class="checkmark-image">
+      </div>
+      
+      <h1 class="new-success-title">Pembayaran Berhasil!</h1>
+      
+      <p class="new-success-message">
+        Terima kasih, pembayaranmu sudah kami terima. Untuk memastikan semuanya aman, tim kami akan segera mengirimkan konfirmasi dan detail pesanan langsung ke WhatsApp-mu ya. Ditunggu!
+      </p>
+      
+      <button class="new-success-btn" onclick="handleOke()">Oke, Aku Mengerti</button>
+    </div>
+  </div>
+
+  <script>
+    function showStep2() {
+      document.getElementById('form-pengajuan').classList.add('hidden');
+      document.getElementById('form-pembayaran').classList.remove('hidden');
+    }
+
+    function handleFileUpload(input) {
+      if (input.files && input.files[0]) {
+        const fileName = input.files[0].name;
+        document.querySelector('.upload-text').textContent = fileName;
+        document.querySelector('.upload-icon').textContent = '✓';
+        document.querySelector('.upload-icon').style.color = '#64b837';
+        document.querySelector('.upload-icon').style.borderColor = '#64b837';
+      }
+    }
+
+    function submitPayment() {
+      document.getElementById('form-pembayaran').classList.add('hidden');
+      document.getElementById('new-pembayaran-berhasil').classList.remove('hidden');
+    }
+
+    function handleOke() {
+      if (navigator.vibrate) navigator.vibrate(50);
+      alert('Terima kasih! Kami akan segera menghubungi Anda.');
+      setTimeout(function () {
+        window.location.href = "dashboard.html";
+      }, 200); // jeda 200ms setelah alert ditutup
+    }
+    
+    function closeModal() {
+      alert('Modal ditutup');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const newBtn = document.querySelector('.new-success-btn');
+      if (newBtn) {
+        newBtn.addEventListener('mousedown', function () {
+          this.style.transform = 'translateY(1px)';
+        });
+        newBtn.addEventListener('mouseup', function () {
+          this.style.transform = 'translateY(-2px)';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
